@@ -5,7 +5,7 @@ import myFooter from '@/components/myFooter.vue'
 <template>
   <div class="flex flex-col justify-center items-center">
     <span class="hover:cursor-none">FIANANT</span>
-    <p class="caption">A simplistic financial manager</p>
+    <p class="caption">A simple efficiency manager</p>
   </div>
   <myFooter />
 </template>

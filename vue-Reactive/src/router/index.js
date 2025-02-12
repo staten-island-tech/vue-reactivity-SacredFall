@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import settingsView from '../views/settingsView.vue'
-import calanderView from '../views/calanderView.vue'
+import timerview from '../views/timerView.vue'
 import dashboardView from '../views/dashboardView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,9 +17,9 @@ const router = createRouter({
       component: settingsView,
     },
     {
-      path: '/calander',
-      name: 'calander',
-      component: calanderView,
+      path: '/timer',
+      name: 'timer',
+      component: timerview,
     },
     {
       path: '/dashboard',

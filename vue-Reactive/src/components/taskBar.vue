@@ -81,17 +81,17 @@ onBeforeUnmount(() => {
         </RouterLink>
         <RouterLink
           class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
+          to="/timer"
+          title="Timer"
+        >
+          <i class="pi pi-clock"></i>
+        </RouterLink>
+        <RouterLink
+          class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
           to="/settings"
           title="Settings"
         >
           <i class="pi pi-cog"></i>
-        </RouterLink>
-        <RouterLink
-          class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
-          to="/calander"
-          title="Calander"
-        >
-          <i class="pi pi-calendar"></i>
         </RouterLink>
       </div>
     </transition>
