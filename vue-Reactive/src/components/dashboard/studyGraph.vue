@@ -8,10 +8,12 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, inject, watch } from 'vue'
 import Chart from 'chart.js/auto'
 
 let chartInstance = null
+
+const store = inject('store')
 
 const getPastWeekLabels = () => {
   const labels = []
@@ -33,7 +35,7 @@ const renderChart = () => {
       datasets: [
         {
           label: 'Total Hours',
-          data: [2, 3, 4, 5, 66, 7, 8], // You can update this data dynamically as needed
+          data: store.weeklyHours.value, // Use the weeklyHours data from the store
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
         },
@@ -51,6 +53,13 @@ const renderChart = () => {
   })
 }
 
+const updateChart = () => {
+  if (chartInstance) {
+    chartInstance.data.datasets[0].data = store.weeklyHours.value // Update with actual data
+    chartInstance.update()
+  }
+}
+
 const handleResize = () => {
   if (chartInstance) {
     chartInstance.destroy()
@@ -61,6 +70,7 @@ const handleResize = () => {
 onMounted(() => {
   renderChart()
   window.addEventListener('resize', handleResize)
+  watch(store.weeklyHours, updateChart)
 })
 
 onUnmounted(() => {

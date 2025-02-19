@@ -12,22 +12,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject, computed } from 'vue'
 
-const totalHours = ref(0)
-const hoursToday = ref(0)
-const weeklyProgress = ref(0)
+const store = inject('store')
 
-// Mock data for demonstration
-const fetchProgressData = () => {
-  totalHours.value = 120
-  hoursToday.value = 3
-  weeklyProgress.value = 75
-}
-
-onMounted(() => {
-  fetchProgressData()
-})
+const totalHours = computed(() => store.totalHours.value)
+const hoursToday = computed(() => store.hoursToday.value)
+const weeklyProgress = computed(() => store.weeklyProgress.value)
 
 const currentDate = ref('')
 const currentTime = ref('')

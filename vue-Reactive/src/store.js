@@ -1,31 +1,84 @@
-import { ref, reactive } from 'vue'
+import { ref, watch } from 'vue'
 
-const state = reactive({
-  tasks: [],
-  totalHours: ref(0),
-  hoursToday: ref(0),
-  weeklyProgress: ref(0),
-})
-
-const addTask = (task) => {
-  state.tasks.push({ text: task, done: false })
+// Load state from localStorage
+const loadState = (key, defaultValue) => {
+  const saved = localStorage.getItem(key)
+  return saved ? JSON.parse(saved) : defaultValue
 }
 
-const toggleTaskDone = (index) => {
-  state.tasks[index].done = !state.tasks[index].done
+const totalHours = ref(loadState('totalHours', 0))
+const hoursToday = ref(loadState('hoursToday', 0))
+const weeklyProgress = ref(loadState('weeklyProgress', 0))
+const timerTime = ref(loadState('timerTime', 0))
+const weeklyHours = ref(loadState('weeklyHours', [0, 0, 0, 0, 0, 0, 0]))
+
+let totalHoursFromWeekly = weeklyHours.value.reduce((acc, hours) => acc + hours, 0)
+totalHours.value = totalHoursFromWeekly
+hoursToday.value = weeklyHours.value[weeklyHours.value.length - 1]
+
+// Save state to localStorage
+const saveState = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value))
 }
 
-const fetchProgressData = () => {
-  state.totalHours.value = 120
-  state.hoursToday.value = 3
-  state.weeklyProgress.value = 75
+const updateTotalHours = (hours) => {
+  totalHours.value = hours
+  saveState('totalHours', totalHours.value)
+}
+
+const updateHoursToday = (hours) => {
+  const lastIndex = weeklyHours.value.length - 1
+  totalHours.value += hours - weeklyHours.value[lastIndex]
+  weeklyHours.value[lastIndex] = hours
+  hoursToday.value = hours
+  saveState('totalHours', totalHours.value)
+  saveState('hoursToday', hoursToday.value)
+  saveState('weeklyHours', weeklyHours.value)
+}
+
+const updateWeeklyProgress = (progress) => {
+  weeklyProgress.value = progress
+  saveState('weeklyProgress', weeklyProgress.value)
+}
+
+const updateTimerTime = (time) => {
+  timerTime.value = time
+  saveState('timerTime', timerTime.value)
+}
+
+const updateWeeklyHours = (hoursArray) => {
+  const oldTotalHoursFromWeekly = totalHoursFromWeekly
+  totalHoursFromWeekly = hoursArray.reduce((acc, hours) => acc + hours, 0)
+  totalHours.value += totalHoursFromWeekly - oldTotalHoursFromWeekly
+  weeklyHours.value = hoursArray
+  hoursToday.value = hoursArray[hoursArray.length - 1]
+  saveState('totalHours', totalHours.value)
+  saveState('hoursToday', hoursToday.value)
+  saveState('weeklyHours', weeklyHours.value)
 }
 
 export const useStore = () => {
   return {
-    state,
-    addTask,
-    toggleTaskDone,
-    fetchProgressData,
+    totalHours,
+    hoursToday,
+    weeklyProgress,
+    timerTime,
+    weeklyHours,
+    updateTotalHours,
+    updateHoursToday,
+    updateWeeklyProgress,
+    updateTimerTime,
+    updateWeeklyHours,
   }
 }
+
+// Watch for changes in weeklyHours and update totalHours and hoursToday accordingly
+watch(weeklyHours, (newWeeklyHours) => {
+  const oldTotalHoursFromWeekly = totalHoursFromWeekly
+  totalHoursFromWeekly = newWeeklyHours.reduce((acc, hours) => acc + hours, 0)
+  totalHours.value += totalHoursFromWeekly - oldTotalHoursFromWeekly
+  hoursToday.value = newWeeklyHours[newWeeklyHours.length - 1]
+  saveState('totalHours', totalHours.value)
+  saveState('hoursToday', hoursToday.value)
+  saveState('weeklyHours', weeklyHours.value)
+})

@@ -66,28 +66,28 @@ onBeforeUnmount(() => {
     <transition name="slide-down">
       <div v-if="isOpen" class="mt-4 space-y-4 flex flex-col items-center">
         <RouterLink
-          class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
+          class="bg-slate-800 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
           to="/"
           title="Home"
         >
           <i class="pi pi-home"></i>
         </RouterLink>
         <RouterLink
-          class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
+          class="bg-slate-800 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
           to="/dashboard"
           title="Dashbaord"
         >
-          <i class="pi pi-money-bill"></i>
+          <i class="pi pi-tablet"></i>
         </RouterLink>
         <RouterLink
-          class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
+          class="bg-slate-800 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
           to="/timer"
           title="Timer"
         >
           <i class="pi pi-clock"></i>
         </RouterLink>
         <RouterLink
-          class="bg-slate-500 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
+          class="bg-slate-800 text-white w-[50px] h-[50px] rounded-full flex items-center justify-center ring-white hover:ring-1 duration-200 shadow-md"
           to="/settings"
           title="Settings"
         >

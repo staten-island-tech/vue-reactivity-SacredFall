@@ -5,9 +5,7 @@
       <button
         @click="showModal = true"
         class="p-2 bg-white pi pi-plus hover:cursor-pointer rounded-2xl hover:ring-4 ring-zinc-500"
-      >
-        Add Task
-      </button>
+      ></button>
     </div>
 
     <toDoCard
@@ -40,12 +38,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import toDoCard from '../toDoCard.vue'
 
 const tasks = ref([])
 const newTaskText = ref('')
 const showModal = ref(false)
+
+const loadTasks = () => {
+  const savedTasks = localStorage.getItem('tasks')
+  if (savedTasks) {
+    tasks.value = JSON.parse(savedTasks)
+  }
+}
+
+const saveTasks = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks.value))
+}
 
 const addTask = () => {
   if (newTaskText.value.trim() === '') {
@@ -61,10 +70,12 @@ const addTask = () => {
   tasks.value.push(newTask)
   newTaskText.value = ''
   showModal.value = false
+  saveTasks()
 }
 
 const deleteTask = (taskToDelete) => {
   tasks.value = tasks.value.filter((task) => task.id !== taskToDelete.id)
+  saveTasks()
 }
 
 const toggleCompleted = (taskToToggle) => {
@@ -72,5 +83,8 @@ const toggleCompleted = (taskToToggle) => {
   if (task) {
     task.completed = !task.completed
   }
+  saveTasks()
 }
+
+onMounted(loadTasks)
 </script>
