@@ -5,8 +5,8 @@
     <p class="text-white/50">Current time: {{ currentTime }}</p>
     <hr class="border-t border-white/50 my-4" />
     <h4 class="text-white text-xl">Progress Summary</h4>
-    <p class="text-white/50">Total Hours: {{ totalHours }}</p>
-    <p class="text-white/50">Hours Studied Today: {{ hoursToday }}</p>
+    <p class="text-white/50">Total Hours: {{ totalHours.toFixed(3) }}</p>
+    <p class="text-white/50">Hours Studied Today: {{ hoursToday.toFixed(3) }}</p>
     <p class="text-white/50">Weekly Progress: {{ weeklyProgress }}%</p>
   </div>
 </template>
