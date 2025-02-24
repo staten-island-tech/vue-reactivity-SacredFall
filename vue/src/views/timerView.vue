@@ -31,7 +31,7 @@ import PomodoroSettings from '../components/timer/PomodoroSettings.vue'
 
 const store = inject('store')
 
-const timeLeft = ref(1500) // Default to 25 minutes
+const timeLeft = ref(1500)
 const timer = ref(null)
 const workDuration = ref(Math.round(25) * 60)
 const breakDuration = ref(Math.round(5) * 60)
@@ -42,7 +42,7 @@ const showTimerMessage = ref(false)
 
 const audio = new Audio('/ding.mp3')
 
-const startTimer = () => {
+function startTimer() {
   if (timer.value) return
   isTimerRunning.value = true
   timer.value = setInterval(() => {
@@ -56,24 +56,24 @@ const startTimer = () => {
       timeLeft.value = isWorkSession.value ? workDuration.value : breakDuration.value
       audio.play()
       updateStoreHours()
-      startTimer() // Automatically start the next session
+      startTimer()
     }
   }, 1000)
 }
 
-const resetTimer = () => {
+function resetTimer() {
   clearInterval(timer.value)
   timer.value = null
   timeLeft.value = isWorkSession.value ? workDuration.value : breakDuration.value
   isTimerRunning.value = false
 }
 
-const closeTimer = () => {
+function closeTimer() {
   resetTimer()
   isTimerRunning.value = false
 }
 
-const applySettings = ({ workDuration: newWorkDuration, breakDuration: newBreakDuration }) => {
+function applySettings({ workDuration: newWorkDuration, breakDuration: newBreakDuration }) {
   workDuration.value = Math.round(newWorkDuration * 60)
   breakDuration.value = Math.round(newBreakDuration * 60)
   console.log('Settings applied')
@@ -81,24 +81,25 @@ const applySettings = ({ workDuration: newWorkDuration, breakDuration: newBreakD
   showConfirmation()
 }
 
-const showConfirmation = () => {
+function showConfirmation() {
   showConfirmationMessage.value = true
   setTimeout(() => {
     showConfirmationMessage.value = false
   }, 3000)
 }
-const timerConfirmation = () => {
+
+function timerConfirmation() {
   showTimerMessage.value = true
   setTimeout(() => {
     showTimerMessage.value = false
   }, 3000)
 }
 
-const updateStoreTimerTime = () => {
+function updateStoreTimerTime() {
   store.updateTimerTime(timeLeft.value)
 }
 
-const updateStoreHours = () => {
+function updateStoreHours() {
   const hoursStudied = Math.max(0, (workDuration.value - timeLeft.value) / 3600)
   store.updateHoursToday(store.hoursToday.value + hoursStudied)
   store.updateTotalHours(store.totalHours.value + hoursStudied)
@@ -106,7 +107,7 @@ const updateStoreHours = () => {
   timerConfirmation()
 }
 
-const updateWeeklyHoursInStore = (hoursStudied) => {
+function updateWeeklyHoursInStore(hoursStudied) {
   const newWeeklyHours = [...store.weeklyHours.value]
   newWeeklyHours[newWeeklyHours.length - 1] += parseFloat(hoursStudied)
   store.updateWeeklyHours(newWeeklyHours)
